@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News!</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">NEWS</div>
+        <div class="user-info">
+            <span class="username">Welcome, username</span>
+            <span class="clickable">login</span>
+        </div>
+    </header>
+    <main class="main">
+        <div class="post">
+            <div class="actions">
+                <span class="clickable">upvote</span>
+                <span class="clickable">comment</span>
+            </div>
+
+            <div class="post-info">
+                <h2 class="title">title</h2>
+                by <i>author</i> in <b>2 times</b> ago.
+            </div>
+
+            <div class="source clickable">
+                google.com
+            </div>
+        </div>
+    </main>
+</body>
+</html>

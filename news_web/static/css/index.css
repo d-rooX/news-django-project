@@ -1,0 +1,95 @@
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Header */
+.header {
+    width: 100%;
+    height: 80px;
+    background-color: gray;
+    color: #fff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    width: 120px;
+    text-align: center;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: orange;
+}
+
+.user-info {
+    width: 120px;
+    height: 100%;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.username {
+    width: 100%;
+    font-weight: 700;
+    display: block;
+}
+
+/* Clickable links */
+.clickable {
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    cursor: pointer;
+    transition: color .3s linear;
+}
+.clickable:hover {
+    color: orange;
+}
+
+/* Main */
+.main {
+    max-width: 1000px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.post {
+    width: 100%;
+    background-color: gray;
+    color: #fff;
+    padding: 15px;
+
+    display: flex;
+}
+
+.actions {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    /*todo КНОПКИ*/
+    align-items: flex-start;
+}
+
+.post-info.title {
+
+}
+
+.post-info {
+    flex: 3;
+}
+
+.source {
+    flex: 2;
+    text-align: center;
+    line-height: 51.5px;
+    font-size: 24px;
+    color: lightgray;
+}
