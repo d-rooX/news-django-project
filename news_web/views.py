@@ -2,9 +2,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.urls import reverse
 
-from news_api.models import Post, Comment
+from news_api.models import Post, Comment, Upvote
 from .forms import PostInput, CommentInput
 
 
@@ -28,9 +27,15 @@ def create(request):
 @login_required
 def upvote_post(request, post_id):
     post = Post.objects.get(id=post_id)
-    post.upvotes += 1
+    user_upvote = post.upvotes.filter(author_id=request.user.id)
+    if user_upvote:
+        user_upvote.delete()
+    else:
+        user_upvote = Upvote(author=request.user, post=post)
+        user_upvote.save()
+
     post.save()
-    return redirect('index')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def register(request):
@@ -82,6 +87,6 @@ def post_comments(request, post_id):
         'form': form,
         'post': post,
         'errors': errors,
-        'comments': comments
+        'comments': comments,
     }
     return render(request, 'news_web/post.html', data)

@@ -14,6 +14,7 @@
         <div class="post">
             <h2>{{ post.title }}</h2>
             <h3><a href="{{ post.link }}">{{ post.link }}</a></h3>
+            <p><a href="{{ post.id }}/upvote">{{ post.upvotes.count }}</a></p>
             <p>by {{ post.author }}</p>
             <p>{{ post.creation_date }}</p>
             <hr>
