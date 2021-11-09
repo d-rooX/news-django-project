@@ -18,6 +18,9 @@ $ pip install -r requirements.txt
 $ python manage.py migrate
 ```
 
+#### To use API you need to authenticate via web-app and extract auth-key from /profile page
+
+
 > Postman collection: https://www.getpostman.com/collections/50d6953f214e19f1708b 
 
 > Github repository: https://github.com/d-rooX/news-django-project
