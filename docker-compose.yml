@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  news-application:
+  newsproject:
     build: ./
     command: python manage.py runserver
     ports:
