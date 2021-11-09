@@ -2,6 +2,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.urls import reverse
+
 from news_api.models import Post, Comment
 from .forms import PostInput, CommentInput
 
@@ -21,6 +23,14 @@ def create(request):
 
     form = PostInput()
     return render(request, 'news_web/create.html', {'form': form, 'errors': errors})
+
+
+@login_required
+def upvote_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.upvotes += 1
+    post.save()
+    return redirect('index')
 
 
 def register(request):
