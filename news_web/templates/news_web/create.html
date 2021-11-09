@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create post</title>
+</head>
+<body>
+    <form method="post" action="/create">
+        {% csrf_token %}
+        Title: {{ form.title }}<br>
+        Link: {{ form.link }}<br>
+        <input type="submit" value="create">
+        <p style="color: darkred">{{ errors }}</p>
+    </form>
+</body>
+</html>

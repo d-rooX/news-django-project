@@ -7,6 +7,17 @@ body {
     box-sizing: border-box;
 }
 
+a {
+    text-decoration: none;
+    color: #fff;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    cursor: pointer;
+    transition: color .3s linear;
+}
+a:hover {
+    color: orange;
+}
+
 /* Header */
 .header {
     width: 100%;
@@ -44,15 +55,6 @@ body {
     display: block;
 }
 
-/* Clickable links */
-.clickable {
-    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
-    cursor: pointer;
-    transition: color .3s linear;
-}
-.clickable:hover {
-    color: orange;
-}
 
 /* Main */
 .main {
@@ -66,20 +68,28 @@ body {
     background-color: gray;
     color: #fff;
     padding: 15px;
+    margin-bottom: 20px;
 
     display: flex;
+}
+
+.create-post {
+    font-size: 24px;
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
 }
 
 .actions {
     flex: 1;
     display: flex;
-    flex-direction: row;
-    /*todo КНОПКИ*/
+    flex-direction: column;
+    justify-content: space-around;
     align-items: flex-start;
+    font-size: 16px;
 }
 
-.post-info.title {
-
+.counter {
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    font-size: 11px;
 }
 
 .post-info {
