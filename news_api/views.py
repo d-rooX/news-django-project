@@ -2,7 +2,7 @@ from rest_framework import status, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from news_api.models import Post, Upvote
+from news_api.models import Post, Upvote, Comment
 from news_api.serializers import PostSerializer, PostDetailSerializer, CommentSerializer
 
 
@@ -81,7 +81,7 @@ def post_upvote(request, pk, format=None):
 
 @api_view(["POST"])
 @permission_classes((permissions.IsAuthenticated,))
-def create_comment(request, pk):
+def post_comment(request, pk):
     """
     Create comment of post
     """
@@ -97,5 +97,27 @@ def create_comment(request, pk):
             serializer.validated_data['post_id'] = pk
             serializer.save()
             return Response(serializer.data)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["PUT", "DELETE"])
+@permission_classes((permissions.IsAuthenticated,))
+def edit_comment(request, post_id, comment_id):
+    try:
+        Post.objects.get(pk=post_id)
+        comment = Comment.objects.get(pk=comment_id)
+    except (Post.DoesNotExist, Comment.DoesNotExist):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "PUT":
+        if comment.author == request.user:
+            serializer = CommentSerializer(comment, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        if comment.author == request.user:
+            comment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
