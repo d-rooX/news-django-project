@@ -1,20 +1,19 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>News!</title>
+{% extends 'news_web/base.html' %}
+
+{% block css %}
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <header class="header">
         <div class="logo">NEWS</div>
 
         <span class="clickable create-post"><a href="{% url 'create' %}">create post</a></span>
 
         <div class="user-info">
-            <span class="username">Welcome, {% if user %} {{ user }} {% else %}Anon {% endif %}</span>
-            <span class="clickable">login</span>
+            <span class="username">Welcome, {{ user }}</span>
+            <span class="clickable"><a href="{% url 'login' %}">login</a></span>
         </div>
     </header>
     <main class="main">
@@ -38,7 +37,9 @@
             </div>
 
             <div class="source clickable">
-                {{ post.link }}
+                <a href="{{ post.link }}">
+                    {{ post.link }}
+                </a>
             </div>
         </div>
         {% endfor %}
@@ -46,5 +47,4 @@
         <h2>No posts yet...</h2>
     {% endif %}
     </main>
-</body>
-</html>
+{% endblock %}

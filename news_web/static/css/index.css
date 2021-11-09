@@ -98,6 +98,8 @@ a:hover {
 
 .source {
     flex: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
     text-align: center;
     line-height: 51.5px;
     font-size: 24px;

@@ -1,0 +1,22 @@
+{% extends 'news_web/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <h2>Register</h2>
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+
+        Username: {{ form.username }} <br>
+
+        Password: {{ form.password1 }} <br>
+        Password confirmation: {{ form.password2 }} <br>
+        <input type="submit" value="register">
+        {% if form.errors %}
+            <p>There is something wrong</p>
+            {% for error in form.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+    </form>
+{% endblock %}
