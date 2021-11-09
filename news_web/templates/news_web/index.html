@@ -22,12 +22,12 @@
         <div class="post">
             <div class="actions">
                 <div>
-                    <span class="clickable">upvote</span>
+                    <a href="{{ post.id }}/upvote">upvote</a>
                     <span class="counter">{{ post.upvotes }}</span>
                 </div>
                 <div>
-                    <span class="clickable">comments</span>
-                    <span class="counter">77</span>
+                    <a href="{{ post.id }}">comments</a>
+                    <span class="counter">{{ post.comments.count }}</span>
                 </div>
             </div>
 

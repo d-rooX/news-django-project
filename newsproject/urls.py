@@ -22,7 +22,8 @@ from newsproject import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('news_api.urls')),
-    path('', include('news_web.urls'))
+    path('', include('news_web.urls')),
+    path('', include('django.contrib.auth.urls'))
 ]
 
 if settings.DEBUG:

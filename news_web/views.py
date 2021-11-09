@@ -2,8 +2,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from news_api.models import Post
-from .forms import PostInput
+from news_api.models import Post, Comment
+from .forms import PostInput, CommentInput
 
 
 @login_required
@@ -48,3 +48,30 @@ def index(request):
     }
     return render(request, 'news_web/index.html', data)
 
+
+def post_comments(request, post_id):
+    errors = ''
+    if request.method == 'POST':
+        form = CommentInput(request.POST)
+        if form.is_valid():
+            comment = Comment(**form.cleaned_data)
+            comment.author = request.user
+            comment.post_id = post_id
+            comment.save()
+        else:
+            errors = form.errors.values()
+
+    if request.user.is_authenticated:
+        form = CommentInput()
+    else:
+        form = None
+
+    post = Post.objects.get(id=post_id)
+    comments = post.comments.all().order_by('-id')
+    data = {
+        'form': form,
+        'post': post,
+        'errors': errors,
+        'comments': comments
+    }
+    return render(request, 'news_web/post.html', data)

@@ -12,5 +12,6 @@ class Post(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(get_user_model(), models.SET_NULL, null=True)
-    post = models.ForeignKey(Post, models.CASCADE)
+    post = models.ForeignKey(Post, models.CASCADE, related_name='comments')
     text = models.TextField()
+    creation_date = models.DateTimeField(auto_now_add=True)
