@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from rest_framework.authtoken.models import Token
 
 from news_api.models import Post, Comment, Upvote
 from .forms import PostInput, CommentInput
@@ -70,7 +71,7 @@ def index(request):
 
 def post_comments(request, post_id):
     errors = ''
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_authenticated:
         form = CommentInput(request.POST)
         if form.is_valid():
             comment = Comment(**form.cleaned_data)
@@ -98,3 +99,22 @@ def post_comments(request, post_id):
         'comments': comments,
     }
     return render(request, 'news_web/post.html', data)
+
+
+@login_required
+def profile(request):
+    user = request.user
+
+    try:
+        auth_token = Token.objects.get(user_id=user.id)
+    except Token.DoesNotExist:
+        auth_token = Token.objects.create(user=user)
+        auth_token.save()
+
+    data = {
+        'auth_token': auth_token.key
+    }
+
+    return render(request, 'news_web/profile.html', data)
+
+

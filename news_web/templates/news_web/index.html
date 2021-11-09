@@ -9,17 +9,21 @@
     <header class="header">
         <div class="logo">NEWS</div>
 
-        <span class="clickable create-post"><a href="{% url 'create' %}">create post</a></span>
+        <span class="create-post"><a href="{% url 'create' %}">create post</a></span>
 
         <div class="user-info">
             <span class="username">Welcome, {{ user }}</span>
-            <span class="clickable"><a href="{% url 'login' %}">login</a></span>
+            <a href="{% url 'login' %}">login</a>
         </div>
     </header>
     <main class="main">
+
+    {#  Rendering posts list  #}
     {% if posts %}
         {% for post in posts %}
         <div class="post">
+
+            {#   Actions with upvotes and comments   #}
             <div class="actions">
                 <div>
                     <a href="{{ post.id }}/upvote">upvote</a>
@@ -36,13 +40,14 @@
                 by <i>{{ post.author }}</i> at <b>{{ post.creation_date }}</b>
             </div>
 
-            <div class="source clickable">
+            <div class="source">
                 <a href="{{ post.link }}">
                     {{ post.link }}
                 </a>
             </div>
         </div>
         {% endfor %}
+
     {% else %}
         <h2>No posts yet...</h2>
     {% endif %}

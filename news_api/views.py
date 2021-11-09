@@ -79,6 +79,9 @@ def post_upvote(request, pk, format=None):
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))
 def create_comment(request, pk):
+    """
+    Create comment of post
+    """
     try:
         Post.objects.get(pk=pk)
     except Post.DoesNotExist:
