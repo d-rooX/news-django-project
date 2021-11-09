@@ -80,11 +80,8 @@ WSGI_APPLICATION = "newsproject.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "newsAPI",
-        "USER": "droox",
-        "PASSWORD": "HAHA",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "PASSWORD": os.getenv('DB_PASSWORD'),
+        "HOST": "db",
     }
 }
 
