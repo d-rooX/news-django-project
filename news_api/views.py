@@ -6,18 +6,18 @@ from news_api.models import Post, Comment, Upvote
 from news_api.serializers import PostSerializer, PostDetailSerializer, CommentSerializer
 
 
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 @permission_classes((permissions.IsAuthenticatedOrReadOnly,))
 def posts_list(request, format=None):
     """
     List all posts, or create a new post.
     """
-    if request.method == 'GET':
+    if request.method == "GET":
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    elif request.method == "POST":
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -25,7 +25,7 @@ def posts_list(request, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(["GET", "PUT", "DELETE"])
 @permission_classes((permissions.IsAuthenticatedOrReadOnly,))
 def post_detail(request, pk, format=None):
     """
@@ -36,11 +36,11 @@ def post_detail(request, pk, format=None):
     except Post.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
+    if request.method == "GET":
         serializer = PostDetailSerializer(post)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    elif request.method == "PUT":
         data = JSONParser().parse(request)
         serializer = PostDetailSerializer(post, data=data)
         if serializer.is_valid():
@@ -48,12 +48,12 @@ def post_detail(request, pk, format=None):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    elif request.method == "DELETE":
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes((permissions.IsAuthenticated,))
 def post_upvote(request, pk, format=None):
     """
@@ -64,7 +64,7 @@ def post_upvote(request, pk, format=None):
     except Post.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         user_upvote = post.upvotes.filter(author_id=request.user.id)
         if user_upvote:
             user_upvote.delete()
@@ -76,7 +76,7 @@ def post_upvote(request, pk, format=None):
         return Response(serializer.data)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes((permissions.IsAuthenticated,))
 def create_comment(request, pk):
     """
@@ -87,7 +87,7 @@ def create_comment(request, pk):
     except Post.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             comment = Comment(**serializer.data)
@@ -95,4 +95,3 @@ def create_comment(request, pk):
             comment.post_id = pk
             comment.save()
             return Response(comment)
-

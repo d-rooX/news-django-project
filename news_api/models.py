@@ -11,11 +11,11 @@ class Post(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(get_user_model(), models.SET_NULL, null=True)
-    post = models.ForeignKey(Post, models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Post, models.CASCADE, related_name="comments")
     text = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
 
 
 class Upvote(models.Model):
-    author = models.ForeignKey(get_user_model(), models.CASCADE, related_name='upvotes')
-    post = models.ForeignKey(Post, models.CASCADE, related_name='upvotes')
+    author = models.ForeignKey(get_user_model(), models.CASCADE, related_name="upvotes")
+    post = models.ForeignKey(Post, models.CASCADE, related_name="upvotes")

@@ -10,19 +10,19 @@ from .forms import PostInput, CommentInput
 
 @login_required
 def create(request):
-    errors = ''
-    if request.method == 'POST':
+    errors = ""
+    if request.method == "POST":
         form = PostInput(request.POST)
         if form.is_valid():
             post = form.save()
             post.author = request.user
             post.save()
-            return redirect('index')
+            return redirect("index")
 
         errors = form.errors
 
     form = PostInput()
-    return render(request, 'news_web/create.html', {'form': form, 'errors': errors})
+    return render(request, "news_web/create.html", {"form": form, "errors": errors})
 
 
 @login_required
@@ -30,7 +30,7 @@ def upvote_post(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
     except Post.DoesNotExist:
-        return redirect('index')
+        return redirect("index")
 
     user_upvote = post.upvotes.filter(author_id=request.user.id)
     if user_upvote:
@@ -40,38 +40,38 @@ def upvote_post(request, post_id):
         user_upvote.save()
 
     post.save()
-    return redirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
 def register(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UserCreationForm(request.POST)
 
         if form.is_valid():
             form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password2']
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password2"]
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('index')
+            return redirect("index")
 
     else:
         form = UserCreationForm()
 
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, "registration/register.html", {"form": form})
 
 
 def index(request):
     posts = Post.objects.all()
     data = {
-        'posts': posts,
+        "posts": posts,
     }
-    return render(request, 'news_web/index.html', data)
+    return render(request, "news_web/index.html", data)
 
 
 def post_comments(request, post_id):
-    errors = ''
-    if request.method == 'POST' and request.user.is_authenticated:
+    errors = ""
+    if request.method == "POST" and request.user.is_authenticated:
         form = CommentInput(request.POST)
         if form.is_valid():
             comment = Comment(**form.cleaned_data)
@@ -89,16 +89,16 @@ def post_comments(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
     except Post.DoesNotExist:
-        return redirect('index')
+        return redirect("index")
 
-    comments = post.comments.all().order_by('-id')
+    comments = post.comments.all().order_by("-id")
     data = {
-        'form': form,
-        'post': post,
-        'errors': errors,
-        'comments': comments,
+        "form": form,
+        "post": post,
+        "errors": errors,
+        "comments": comments,
     }
-    return render(request, 'news_web/post.html', data)
+    return render(request, "news_web/post.html", data)
 
 
 @login_required
@@ -111,10 +111,6 @@ def profile(request):
         auth_token = Token.objects.create(user=user)
         auth_token.save()
 
-    data = {
-        'auth_token': auth_token.key
-    }
+    data = {"auth_token": auth_token.key}
 
-    return render(request, 'news_web/profile.html', data)
-
-
+    return render(request, "news_web/profile.html", data)
