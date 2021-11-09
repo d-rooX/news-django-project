@@ -1,6 +1,5 @@
 from rest_framework import status, permissions
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
 from news_api.models import Post, Upvote
@@ -44,16 +43,17 @@ def post_detail(request, pk, format=None):
         return Response(serializer.data)
 
     elif request.method == "PUT":
-        data = JSONParser().parse(request)
-        serializer = PostDetailSerializer(post, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if post.author == request.user:
+            serializer = PostDetailSerializer(post, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
-        post.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if post.author == request.user:
+            post.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(["POST"])
@@ -97,3 +97,5 @@ def create_comment(request, pk):
             serializer.validated_data['post_id'] = pk
             serializer.save()
             return Response(serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

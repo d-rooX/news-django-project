@@ -62,7 +62,7 @@ def register(request):
 
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.order_by('-creation_date')
     data = {
         "posts": posts,
     }
