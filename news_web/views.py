@@ -1,7 +1,7 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
 
 from news_api.models import Post, Comment, Upvote

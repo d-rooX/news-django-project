@@ -2,7 +2,8 @@ from rest_framework import status, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from news_api.models import Post, Comment, Upvote
+
+from news_api.models import Post, Upvote
 from news_api.serializers import PostSerializer, PostDetailSerializer, CommentSerializer
 
 
@@ -20,8 +21,10 @@ def posts_list(request, format=None):
     elif request.method == "POST":
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data['author'] = request.user
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -90,8 +93,7 @@ def create_comment(request, pk):
     if request.method == "POST":
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-            comment = Comment(**serializer.data)
-            comment.author = request.user
-            comment.post_id = pk
-            comment.save()
-            return Response(comment)
+            serializer.validated_data['author'] = request.user
+            serializer.validated_data['post_id'] = pk
+            serializer.save()
+            return Response(serializer.data)

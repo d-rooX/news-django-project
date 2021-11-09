@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from news_api.models import Post, Comment
 
 
