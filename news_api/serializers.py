@@ -1,27 +1,32 @@
 from rest_framework import serializers
-from news_api.models import Post
+from news_api.models import Post, Comment
 
 
-class PostSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    title = serializers.CharField(max_length=30)
-    author = serializers.CharField(max_length=30)
-    upvotes = serializers.IntegerField(required=False)
-    creation_date = serializers.DateTimeField(read_only=True)
+class PostSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    comments_count = serializers.IntegerField(source='comments.count', read_only=True)
+    upvotes_count = serializers.IntegerField(source='upvotes.count', read_only=True)
 
-    def create(self, validated_data):
-        """
-        Create and return a new `Post` instance, given the validated data.
-        """
-        return Post.objects.create(**validated_data)
+    class Meta:
+        model = Post
+        fields = '__all__'
 
-    def update(self, instance, validated_data):
-        """
-        Update and return and existing `Post` instance, given the validated data.
-        """
-        instance.title = validated_data.get('title', instance.title)
-        instance.author = validated_data.get('author', instance.author)
-        instance.upvotes = validated_data.get('upvotes', instance.upvotes)
-        instance.save()
-        return instance
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+
+    class Meta:
+        model = Comment
+        exclude = ('post',)
+
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
+    upvotes_count = serializers.IntegerField(source='upvotes.count', read_only=True)
+
+    class Meta:
+        model = Post
+        fields = '__all__'
+        depth = 1
 

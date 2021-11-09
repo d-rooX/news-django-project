@@ -26,7 +26,11 @@ def create(request):
 
 @login_required
 def upvote_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return redirect('index')
+
     user_upvote = post.upvotes.filter(author_id=request.user.id)
     if user_upvote:
         user_upvote.delete()
@@ -81,7 +85,11 @@ def post_comments(request, post_id):
     else:
         form = None
 
-    post = Post.objects.get(id=post_id)
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return redirect('index')
+
     comments = post.comments.all().order_by('-id')
     data = {
         'form': form,
