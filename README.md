@@ -19,6 +19,7 @@ $ python manage.py migrate
 ```
 
 #### To use API you need to authenticate via web-app and extract auth-key from /profile page
+#### Make update, delete and create requests with header "Authorization" and value "Token <YOUR_TOKEN>"
 
 
 > Postman collection: https://www.getpostman.com/collections/50d6953f214e19f1708b 
